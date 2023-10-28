@@ -15,6 +15,7 @@ type Director {
   id: ID!
   name: String!
   birth: Int
+  movies: [Movie!]!
 }
 
 type Movie {
@@ -26,6 +27,7 @@ type Movie {
 }
 `;
 
+// bir yönetmenin birden fazla filmi olabilir bu sebepten tanımlama yaparken movies: [Movie!]! şeklinde tanımladık
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
@@ -41,6 +43,11 @@ const resolvers = {
   Movie: {
     director: (parent, args) => {
       return directors.find((director) => director.id === parent.directorId);
+    },
+  },
+  Director: {
+    movies: (parent, args) => {
+      return movies.filter((movie) => movie.directorId === parent.id);
     },
   },
 };
