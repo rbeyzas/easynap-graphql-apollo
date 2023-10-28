@@ -6,7 +6,9 @@ import { movies, directors } from './data.js';
 const typeDefs = `#graphql
 type Query {
   director(id: ID!): Director!
+  directors: [Director!]!
   movie(id: ID!): Movie!
+  movies:[Movie!]!
 }
 
 type Director {
@@ -29,9 +31,11 @@ const resolvers = {
     director: (parent, args) => {
       return directors.find((director) => director.id === args.id);
     },
+    directors: () => directors,
     movie: (parent, args) => {
       return movies.find((movie) => movie.id === args.id);
     },
+    movies: () => movies,
   },
 };
 
@@ -45,3 +49,6 @@ console.log(`🚀 Server ready at ${url}`);
 
 // parent ilişkisel yapılarda kullanacağımız parametredir.
 // args bize gelen tüm gelen parametrelerdir
+//  directors: [Director] tüm direktörleri getirecek bir array
+// eğer datanın içerisinde null bir data varsa ve bunun gelmesini istemiyorsan directors: [Director!] yaptığında null değer varsa hata alırsın ve null değer geldiğini anlarsın
+// eğer datanın (arrayin) komple null olarak ngelmesini sitemiyorsan directors: [Director!]! şeklinde yazman gerek.
