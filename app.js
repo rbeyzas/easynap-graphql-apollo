@@ -1,48 +1,9 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { movies, directors } from './data.js';
-
-// The GraphQL schema
-const typeDefs = `#graphql
-type Query {
-  director(id: ID!): Director!
-  directors: [Director!]!
-  movie(id: ID!): Movie!
-  movies:[Movie!]!
-}
-
-type Mutation{
-  createDirector(data: CreateDirectorInput!): Director!
-  createMovie(data: CreateMovieInput!): Movie! 
-}
-
-input CreateDirectorInput {
-  name: String!,
-   birth: Int
-}
-
-input CreateMovieInput {
-  title: String!,
-  description: String,
-  year: Int!,
-  directorId: ID!
-}
-
-type Director {
-  id: ID!
-  name: String!
-  birth: Int
-  movies: [Movie!]!
-}
-
-type Movie {
-  id: ID!
-  title: String!
-  description: String!
-  year: Int!
-  director: Director!
-}
-`;
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import fs from 'fs';
+const typeDefs = fs.readFileSync('./graphql/schema/schema.graphql', 'utf-8');
 
 // bir yönetmenin birden fazla filmi olabilir bu sebepten tanımlama yaparken movies: [Movie!]! şeklinde tanımladık
 // A map of functions which return data for the schema.
@@ -95,10 +56,13 @@ const resolvers = {
     },
   },
 };
-
-const server = new ApolloServer({
+const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
+});
+
+const server = new ApolloServer({
+  schema,
 });
 
 const { url } = await startStandaloneServer(server);

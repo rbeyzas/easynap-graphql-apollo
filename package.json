@@ -2,10 +2,10 @@
   "type": "module",
   "name": "easynap-graphql-apollo",
   "version": "1.0.0",
-  "description": "",
+  "description": "sds",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "nodemon --ext js,graphql app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.9.4",
+    "@graphql-tools/schema": "^10.0.0",
     "graphql": "^16.8.1",
     "nodemon": "^3.0.1"
   }
