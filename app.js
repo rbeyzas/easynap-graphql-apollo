@@ -10,7 +10,11 @@ type Query {
   movie(id: ID!): Movie!
   movies:[Movie!]!
 }
+type Mutation{
+  createDirector(name: String!, birth: Int): Director!
+  createMovie(title: String!, description: String, year: Int!, directorId: ID!): Movie! 
 
+}
 type Director {
   id: ID!
   name: String!
@@ -40,6 +44,33 @@ const resolvers = {
     },
     movies: () => movies,
   },
+  Mutation: {
+    createDirector: (parent, args) => {
+      const director = {
+        id: Math.random().toString(36).substr(2, 10),
+        ...args,
+      };
+      directors.push(director);
+
+      return director;
+    },
+    createMovie: (parent, args) => {
+      const directorExists = directors.some((director) => director.id === args.directorId);
+
+      if (!directorExists) {
+        throw new Error('Director does not exists.');
+      }
+
+      const movie = {
+        id: Math.random().toString(36).substr(2, 10),
+        ...args,
+      };
+
+      movies.push(movie);
+
+      return movie;
+    },
+  },
   Movie: {
     director: (parent, args) => {
       return directors.find((director) => director.id === parent.directorId);
@@ -65,3 +96,4 @@ console.log(`🚀 Server ready at ${url}`);
 //  directors: [Director] tüm direktörleri getirecek bir array
 // eğer datanın içerisinde null bir data varsa ve bunun gelmesini istemiyorsan directors: [Director!] yaptığında null değer varsa hata alırsın ve null değer geldiğini anlarsın
 // eğer datanın (arrayin) komple null olarak ngelmesini sitemiyorsan directors: [Director!]! şeklinde yazman gerek.
+// some() verilen kritere göre eğer datalardan biri tutuyıorsa true tutmuyorsa false döner.
