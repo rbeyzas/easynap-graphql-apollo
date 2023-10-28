@@ -5,6 +5,7 @@ export const movies = [
     description:
       'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
     year: 1972,
+    directorId: '1',
   },
   {
     id: '2',
@@ -12,6 +13,7 @@ export const movies = [
     description:
       'In Miami in 1980, a determined Cuban immigrant takes over a drug cartel and succumbs to greed.',
     year: 1980,
+    directorId: '1',
   },
   {
     id: '3',
@@ -19,6 +21,7 @@ export const movies = [
     description:
       "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
     year: 1994,
+    directorId: '2',
   },
 ];
 

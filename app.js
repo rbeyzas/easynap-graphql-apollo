@@ -22,6 +22,7 @@ type Movie {
   title: String!
   description: String!
   year: Int!
+  director: Director!
 }
 `;
 
@@ -37,6 +38,11 @@ const resolvers = {
     },
     movies: () => movies,
   },
+  Movie: {
+    director: (parent, args) => {
+      return directors.find((director) => director.id === parent.directorId);
+    },
+  },
 };
 
 const server = new ApolloServer({
@@ -47,7 +53,7 @@ const server = new ApolloServer({
 const { url } = await startStandaloneServer(server);
 console.log(`🚀 Server ready at ${url}`);
 
-// parent ilişkisel yapılarda kullanacağımız parametredir.
+// parent ilişkisel yapılarda kullanacağımız parametredir. parent içinde verinin kendisi bulunur.
 // args bize gelen tüm gelen parametrelerdir
 //  directors: [Director] tüm direktörleri getirecek bir array
 // eğer datanın içerisinde null bir data varsa ve bunun gelmesini istemiyorsan directors: [Director!] yaptığında null değer varsa hata alırsın ve null değer geldiğini anlarsın
